@@ -4,9 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Handlee&family=Playwrite+IE:wght@100..400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Handlee&family=Playwrite+IE:wght@100..400&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <title>Thien An's Graduation</title>
 
     <style>
@@ -25,10 +28,11 @@
             align-items: center;
             min-height: 100vh;
             max-width: 100vw;
-
-            background: radial-gradient(circle at 20% 30%, #0b1220, transparent 40%),
-                radial-gradient(circle at 80% 70%, #0a0f1c, transparent 40%),
-                radial-gradient(circle at 50% 50%, #020617, #01030a);
+            background: radial-gradient(circle at 20% 30%, #0f172a, transparent 40%),
+                /* slate-900 */
+                radial-gradient(circle at 80% 70%, #020617, transparent 40%),
+                /* near black */
+                radial-gradient(circle at 50% 50%, #020617, #000000);
 
             position: relative;
             overflow: hidden;
@@ -78,7 +82,7 @@
 
         .card {
             position: relative;
-            height: 70vh;
+            min-height: 600px;
             display: flex;
             flex-direction: column;
             justify-content: end;
@@ -169,37 +173,75 @@
         }
 
         .view {
-            display: none;
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s ease-in-out;
+            pointer-events: none;
         }
 
         .view-default {
-            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
         }
 
         .card.active .view-default {
-            display: none;
+            opacity: 0;
+            transform: translateY(-10px);
         }
 
         .card.active .view-message {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 40px 8px 8px 8px;
         }
 
         .info-button {
             position: absolute;
-            top: 16px;
+            bottom: 16px;
             right: 16px;
-            width: 32px;
-            height: 32px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            border: solid 2px rgba(255, 255, 255, 0.8);
+            background: rgba(0, 0, 0, 0.1);
+
+            border: solid 2px rgba(0, 0, 0, 0.6);
+            color: black;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             z-index: 2;
+
+            animation: bounce 1.5s infinite;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            30% {
+                transform: translateY(-6px);
+            }
+
+            50% {
+                transform: translateY(0);
+            }
+
+            70% {
+                transform: translateY(-3px);
+            }
         }
     </style>
 
@@ -209,6 +251,9 @@
     <div id="container">
         <div class="wrapper">
             <div class="card">
+                <div class="info-button">
+                    <i class="fa-solid fa-envelope" style="width: 24px; height: 24px; display: flex; justify-content: center; align-items: center;"></i>
+                </div>
                 <!-- CONTENT -->
                 <div class="content" id="cardContent">
 
@@ -254,12 +299,14 @@
                             Cảm ơn bạn đã dành thời gian tham dự buổi lễ.
                         </div>
                         <div style="font-size: 14px; line-height: 1.6; text-align: justify;font-family: 'Roboto';">
-                            Buổi lễ rất nhiều người tham gia, việc tìm kiếm bãi xe sẽ trở nên khó khăn. 
+                            Buổi lễ rất nhiều người tham gia, việc tìm kiếm bãi xe sẽ trở nên khó khăn.
                             Do đó, mình gợi ý các bạn một số vị trí để gửi xe
                         </div>
                         <ul>
-                            <li style="font-family: 'Roboto'; font-size: 14px;">Nhà văn hóa thanh niên <br/> (21 Phạm Ngọc Thạch)</li>
-                            <li style="font-family: 'Roboto'; font-size: 14px;">Bộ Giáo dục và Đào tạo <br/> (3 Công trường quốc tế)</li>
+                            <li style="font-family: 'Roboto'; font-size: 14px;">Nhà văn hóa thanh niên <br /> (21 Phạm
+                                Ngọc Thạch)</li>
+                            <li style="font-family: 'Roboto'; font-size: 14px;">Bộ Giáo dục và Đào tạo <br /> (3 Công
+                                trường quốc tế)</li>
                         </ul>
 
                         <p style="margin-top: 12px; opacity: 0.8;">
@@ -279,8 +326,9 @@
 </body>
 <script>
     const card = document.querySelector('.card');
+    const infoButton = document.querySelector('.info-button');
 
-    card.addEventListener('click', (e) => {
+    infoButton.addEventListener('click', (e) => {
         e.stopPropagation();
         e.preventDefault();
 
